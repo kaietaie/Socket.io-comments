@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Posts, PostsDocument } from './schemas/post.schema';
+import { format } from 'date-fns'
 
 @Injectable()
 export class PostsService {
@@ -18,9 +19,8 @@ export class PostsService {
     }
 
     async createPost(@Body() createPost: CreatePostDTO): Promise<Posts> {
-        const newPost = new this.postModel(createPost)
-
+        const createdAt = format(new Date(), "dd.MM.yy 'в' k:m")
+        const newPost = new this.postModel({...createPost, createdAt} )
         return newPost.save()
-        
     }
 }

@@ -3,18 +3,22 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { PostsController } from './post/post.controller';
-import { PostsService } from './post/post.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PostModule } from './post/post.module';
+// import { GraphQLModule } from '@nestjs/graphql';
+// import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'client', 'dist'),
     }),
+    // GraphQLModule.forRoot<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   include:[],
+    // }),
     MongooseModule.forRoot('mongodb+srv://kaieta:t13zh92wnb@cluster0.sg9jpxp.mongodb.net/?retryWrites=true&w=majority'),
-    PostModule
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

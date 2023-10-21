@@ -5,14 +5,21 @@ export type PostsDocument = Posts & Document
 
 @Schema()
 export class Posts {
+
     @Prop()
-    post_id: string
+    user: string
+
     @Prop()
-    user_id: string
-    @Prop()
-    created_at: string
+    createdAt: string
+    
     @Prop()
     text: string
+
+    @Prop()
+    parentPost: string
+
+    @Prop()
+    homePage: string
 }
 
 export const PostsSchema = SchemaFactory.createForClass(Posts)

@@ -1,42 +1,126 @@
-#root {
-  max-width: 1280px;
+body {
+  font-family: Arial, sans-serif;
+}
+
+.post-form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.post-form textarea {
+  width: 80%;
+  height: 100px;
+  padding: 10px;
+  font-size: 18px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}
+
+.post-form button[type="submit"] {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 20px 40px 0 40px;
+}
+.post-wrapper {
+  margin-top: 10px;
+}
+.post {
+  overflow: auto; 
+  background-color: #fff;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.comment {
+  position: relative;
+  width: 95%;
+  float: right;
+}
+.post-text {
+  padding-top: 20px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.post img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.post-header {
+  background-color: #e7eceed3;
+  padding: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.post-header h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 5px;
 }
 
-.card {
-  padding: 2em;
+.post-header p {
+  font-size: 14px;
+  color: #999;
 }
 
-.read-the-docs {
-  color: #888;
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.post-actions .like-button,
+.post-actions .comment-button {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.post-likes {
+  margin-top: 20px;
+}
+
+.post-likes p {
+  font-size: 14px;
+  color: #999;
+}
+
+.post-comments {
+  margin-top: 20px;
+  width: (post(widht))-20%;
+}
+
+.user-name,
+.date {
+  margin-right: 20px;
+}
+.user-name {
+  font-weight: bold;
+}
+
+.comment-button {
+  font-size: inherit; 
+  color: #767ddac2;
+  border: none;
+  background: transparent;
+  margin: 0px 0px 0px 20px;
+}
+.comment-button:hover {
+  color: #767dda;
+  background: transparent;
+  
 }
