@@ -1,9 +1,9 @@
 import * as AWS from 'aws-sdk';
 
 AWS.config.update({
-  region: 'eu-central-1',
-  accessKeyId: 'AKIAQ2FNHS7WTK2MSJFV',
-  secretAccessKey: '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',
+  region: process.env.region,
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey
 });
  
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
