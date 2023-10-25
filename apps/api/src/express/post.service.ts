@@ -22,9 +22,7 @@ export class PostsService {
 
   async createPost(@Body() createPost: CreatePostDTO): Promise<string> {
     const createdAt = format(new Date(), "dd.MM.yy 'в' k:mm");
-    // const newPost = new this.postModel({ ...createPost, createdAt });
     const newPost = { ...createPost, createdAt };
-    console.dir(newPost)
     return sendMessageToQueue(JSON.stringify(newPost));
   }
 }
