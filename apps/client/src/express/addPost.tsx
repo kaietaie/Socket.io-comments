@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Post } from './interfaces';
+import { Post } from '../interfaces';
 import axios from 'axios';
-import emailValidation from './safety/validationEmail';
-import escapeHtml from './safety/escapeHTML';
-import validateText from './safety/validateText';
+import emailValidation from '../safety/validationEmail';
+import escapeHtml from '../safety/escapeHTML';
+import validateText from '../safety/validateText';
 
 const AddPost = (id?: any) => {
     const [user, setUser] = useState('');
@@ -14,12 +14,13 @@ const AddPost = (id?: any) => {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         try {
             const safetyUser = escapeHtml(user);
             const safetyText = validateText(text);
             const safetyHP = validateText(homePage);
-            const safetyEmail = emailValidation(email)  || '';
-            
+            const safetyEmail = emailValidation(email) || '';
+
             const post: Post = {
                 user: safetyUser,
                 email: safetyEmail,
@@ -27,7 +28,6 @@ const AddPost = (id?: any) => {
                 homePage: safetyHP,
                 createdAt: '',
                 parentPost: id.id || '',
-                captcha:'123'
             };
             axios.defaults.baseURL = 'http://localhost:3000/api';
 
@@ -37,6 +37,7 @@ const AddPost = (id?: any) => {
             }
         } catch (error) {
             console.error('Error posting:', error.response.data.message);
+
         }
     };
     if (!isPosted) {
@@ -70,6 +71,7 @@ const AddPost = (id?: any) => {
                         required
                         onChange={(event) => setText(event.target.value)}
                     />
+
                     <button type="submit">Відправити</button>
                 </form>
             </div>

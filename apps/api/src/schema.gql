@@ -1,0 +1,33 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input MakePost {
+  email: String!
+  homePage: String!
+  parentPost: String!
+  text: String!
+  user: String!
+}
+
+type Mutation {
+  MakePost(data: MakePost!): Posts!
+}
+
+type Posts {
+  _id: String!
+  createdAt: String!
+  homePage: String
+  parentPost: String
+  text: String!
+  user: String!
+}
+
+type Query {
+  AllPosts: [Posts!]!
+  OnePost(id: ID!): Posts!
+}
+
+type Subscription {
+  commentAdded: Posts!
+}

@@ -1,6 +1,31 @@
 body {
   font-family: Arial, sans-serif;
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.header-menu {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  font-size: 24px;
+  color: #292626;
+  background-color: #e7eceed3;
+}
+
+.menu-ul {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-menu li {
+  margin: 0 10px;
+}
+
+.header-menu li.active a {
+  font-weight: bold;
+}
 
 .post-form {
   display: flex;

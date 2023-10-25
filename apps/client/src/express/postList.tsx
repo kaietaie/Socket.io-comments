@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Post } from './interfaces';
+import { Post } from '../interfaces';
 import CommentsThread from './readComments';
 
 const PostList = () => {

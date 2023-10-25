@@ -14,9 +14,6 @@ export class CreatePostDTO {
     @IsNotEmpty()
     text: string;
 
-    @IsNotEmpty()
-    readonly captcha: string;
-
     readonly createdAt: string;
 
     parentPost: string;

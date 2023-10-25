@@ -1,15 +1,25 @@
 import './App.css'
-import PostList from './postList';
-import AddPost from './addPost';
+import Express from './express/postsExpress';
+import Menu from './menu';
+import { Route, Routes } from 'react-router-dom';
+import Graph from './with-graphql/postsGraphql';
+
 
 function App() {
 
   return (
     <>
-      <div className='main-content'>
-        <AddPost />
-        <PostList />
-      </div>
+
+        <header className='header-menu'>
+          <Menu />
+        </header>
+        <main className='main-content'>
+          <Routes>
+            <Route path='/' element={<Express />} />
+            <Route path='/with-graph' element={<Graph />} />
+          </Routes>
+        </main>
+
     </>
   )
 }

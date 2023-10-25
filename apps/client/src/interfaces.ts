@@ -5,5 +5,5 @@ export interface Post {
     homePage: string;
     createdAt: string;
     parentPost: string;
-    captcha: string;
   }
+

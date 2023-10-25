@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Post } from './interfaces';
+import { Post } from '../interfaces';
 import AddPost from './addPost';
 
 interface ShowPost extends Post {
@@ -16,7 +16,7 @@ const Comment: React.FC<CommentProps> = ({ comment, comments }) => {
 
 
     const handleReplyClick = () => {
-        setShowAddPost(true)
+        setShowAddPost(!showAddPost)
     }
 
     return (
