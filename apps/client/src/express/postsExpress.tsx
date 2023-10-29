@@ -2,6 +2,7 @@ import AddPost from "./addPost";
 import PostList from "./postList";
 
 const Express = () => {
+  
     return (
 <div >
         <AddPost />

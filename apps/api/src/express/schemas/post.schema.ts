@@ -20,6 +20,9 @@ export class Posts {
 
     @Prop()
     homePage: string
+
+    @Prop()
+    filedest: string
 }
 
 export const PostsSchema = SchemaFactory.createForClass(Posts)

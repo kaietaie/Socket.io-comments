@@ -5,27 +5,22 @@ import { PostResolver } from 'src/graphql/post.resolver';
 import { Posts, PostsSchema } from './schemas/post.schema';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-    providers: [
-        PostService, 
-        PostResolver 
-    ],
-    imports: [
-        MongooseModule.forFeature([
-            {name: Posts.name, schema: PostsSchema}
-        ]),
-        GraphQLModule.forRoot<ApolloDriverConfig>({
-            driver: ApolloDriver,
-            subscriptions: {
-                'graphql-ws': true,
-              },
-            autoSchemaFile: 'src/schema.gql',
-            sortSchema: true,
-            useGlobalPrefix:true,
-            playground: true,
-          }),
-    ]
+  providers: [PostService, PostResolver],
+  imports: [
+    MongooseModule.forFeature([{ name: Posts.name, schema: PostsSchema }]),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      subscriptions: {
+        'graphql-ws': true,
+      },
+      autoSchemaFile: 'src/schema.gql',
+      sortSchema: true,
+      useGlobalPrefix: true,
+      playground: true,
+    }),
+  ],
 })
 export class PostGraphModule {}

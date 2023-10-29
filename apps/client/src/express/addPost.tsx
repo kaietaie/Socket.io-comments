@@ -4,12 +4,14 @@ import axios from "axios";
 import emailValidation from "../safety/validationEmail";
 import escapeHtml from "../safety/escapeHTML";
 import validateText from "../safety/validateText";
+import { socket } from "../context/WebSocketContext";
 
 const AddPost = (id?: any) => {
   const [user, setUser] = useState("");
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [homePage, setHomePage] = useState("");
+  const [file, setFile] = useState<Express.Multer.File | null>(null);
   const [isPosted, setIsPosted] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -20,7 +22,6 @@ const AddPost = (id?: any) => {
       const safetyText = validateText(text);
       const safetyHP = validateText(homePage);
       const safetyEmail = emailValidation(email) || "";
-
       const post: Post = {
         user: safetyUser,
         email: safetyEmail,
@@ -28,6 +29,7 @@ const AddPost = (id?: any) => {
         homePage: safetyHP,
         createdAt: "",
         parentPost: id.id || "",
+        file,
       };
 
       axios.defaults.baseURL = "http://localhost:3000/api";
@@ -35,6 +37,7 @@ const AddPost = (id?: any) => {
       const response = await axios.post("/posts", post);
       if (response.status === 201) {
         setIsPosted(true);
+        socket.emit("newPost", post);
       }
     } catch (error) {
       console.error("Error whith posting your post");
@@ -70,13 +73,22 @@ const AddPost = (id?: any) => {
             required
             onChange={(event) => setText(event.target.value)}
           />
-
+          <input
+            type="file"
+            name="image"
+            accept=".jpg, .gif, .png, .txt"
+            onChange={(event) => setFile(event.target.files[0])}
+          ></input>
           <button type="submit">Відправити</button>
         </form>
       </div>
     );
   } else {
-    return null;
+    return (
+      <div className="addedPost">
+        Post was added!
+      </div>
+    );
   }
 };
 

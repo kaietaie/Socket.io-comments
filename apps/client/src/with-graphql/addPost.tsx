@@ -3,7 +3,6 @@ import { Post } from "../interfaces";
 import emailValidation from "../safety/validationEmail";
 import escapeHtml from "../safety/escapeHTML";
 import validateText from "../safety/validateText";
-import axios from "axios";
 import { useMutation } from "@apollo/client";
 import { ADD_POST } from "./posts";
 
@@ -12,15 +11,18 @@ const AddPost = (id?: any) => {
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [homePage, setHomePage] = useState("");
+  const [file, setFile] = useState<Express.Multer.File | null>(null);
   const [isPosted, setIsPosted] = useState(false);
 
+  const [MakePost, { loading }] = useMutation(ADD_POST);
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     try {
       const safetyUser = escapeHtml(user);
       const safetyText = validateText(text);
-      const safetyHP = validateText(homePage);
+      const safetyHP = validateText(homePage) || "";
       const safetyEmail = emailValidation(email) || "";
 
       const post: Post = {
@@ -30,18 +32,17 @@ const AddPost = (id?: any) => {
         homePage: safetyHP,
         createdAt: "",
         parentPost: id.id || "",
+        file,
       };
-      const [MakePost, {  loading }] = useMutation(ADD_POST);
-      
+
       MakePost({ variables: { $data: post } });
 
       if (loading) {
-        setIsPosted(!isPosted)
+        setIsPosted(!isPosted);
         return "Submitting...";
       }
-     
     } catch (error) {
-      console.error("Error whith posting your post");
+      console.error("Error whith posting your post", error);
     }
   };
   if (!isPosted) {
@@ -74,7 +75,12 @@ const AddPost = (id?: any) => {
             required
             onChange={(event) => setText(event.target.value)}
           />
-
+          <input
+            type="file"
+            name="image"
+            accept=".jpg, .gif, .png, .txt"
+            onChange={(e) => setFile(e.target.files[0]) }
+          ></input>
           <button type="submit">Відправити</button>
         </form>
       </div>

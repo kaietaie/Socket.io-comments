@@ -6,8 +6,7 @@ export class CreatePostDTO {
     readonly user: string;
 
     @IsEmail()
-    readonly email: string;
-    
+    email: string;
     
     homePage: string;
 
@@ -18,4 +17,5 @@ export class CreatePostDTO {
 
     parentPost: string;
 
+    file: Express.Multer.File | null;;
 }

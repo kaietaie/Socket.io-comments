@@ -6,7 +6,14 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getVar(): object {
+    const region = this.appService.region;
+    const accessKeyId = this.appService.accessKeyId;
+    const secretAccessKey = this.appService.secretAccessKey;
+    return {
+      region,
+      accessKeyId, 
+      secretAccessKey, 
+    };
   }
 }

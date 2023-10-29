@@ -14,6 +14,6 @@ export const ALL_POSTS = gql`
 export const ADD_POST = gql`
     mutation MakePost($data: Post!) {
         makePost(data: $data) {
-    text
+    _id
   }}
 `;
