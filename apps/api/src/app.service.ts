@@ -10,11 +10,11 @@ export class AppService {
   }
 
   get accessKeyId(): string {
-    return this.configService.get<string>('REGION');
+    return this.configService.get<string>('ACCESSKEYID');
   }
 
   get secretAccessKey(): string {
-    return this.configService.get<string>('REGION');
+    return this.configService.get<string>('SECRETACCESSKEY');
   }
 
   getVar(): object {

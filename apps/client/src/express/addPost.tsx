@@ -36,8 +36,9 @@ const AddPost = (id?: any) => {
 
       const response = await axios.post("/posts", post);
       if (response.status === 201) {
+        const newPost = response.data.newPost;
         setIsPosted(true);
-        socket.emit("newPost", post);
+        socket.emit("newPost", newPost);
       }
     } catch (error) {
       console.error("Error whith posting your post");

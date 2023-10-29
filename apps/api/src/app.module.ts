@@ -9,6 +9,7 @@ import { PostModule } from './express/post.module';
 import { ConfigModule } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
 import { CognitoAuthModule } from "@nestjs-cognito/auth";
+import { SQSModule } from './aws-sqs/sqs.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CognitoAuthModule } from "@nestjs-cognito/auth";
     // }),
     ConfigModule.forRoot({
       isGlobal: true, 
+      envFilePath: '../../../.env',
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'client', 'dist'),
@@ -28,13 +30,13 @@ import { CognitoAuthModule } from "@nestjs-cognito/auth";
     MongooseModule.forRoot(
       'mongodb+srv://kaieta:t13zh92wnb@cluster0.sg9jpxp.mongodb.net/?retryWrites=true&w=majority',
     ),
+    SQSModule,
     PostModule,
     PostGraphModule,
     EventsModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-  ],
+  providers: [AppService],
+  exports: [AppService],
 })
 export class AppModule {}

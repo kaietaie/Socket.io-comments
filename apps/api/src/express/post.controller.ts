@@ -15,11 +15,13 @@ import { CreatePostDTO } from './dto/create-post.dto';
 import { PostsService } from './post.service';
 import { Posts } from './schemas/post.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { MessageProducer } from 'src/aws-sqs/producer.service';
 
 @Controller('posts')
 // @Authentication()
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(private readonly postsService: PostsService,
+    private messageProducer: MessageProducer,) {}
   @Get()
   getAllPosts(): Promise<Posts[]> {
     return this.postsService.getAllPosts();

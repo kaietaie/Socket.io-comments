@@ -4,13 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Posts, PostsDocument } from './schemas/post.schema';
 import { format } from 'date-fns';
-import { sendMessageToQueue } from 'src/aws.sqs';
 import { createWriteStream } from 'fs';
+import { MessageProducer } from 'src/aws-sqs/producer.service';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectModel(Posts.name) private postModel: Model<PostsDocument>,
+    private readonly messageProducer: MessageProducer,
   ) {}
 
   async getAllPosts(): Promise<Posts[]> {
@@ -26,15 +27,15 @@ export class PostsService {
     createPost: CreatePostDTO,
   ): Promise<object> {
     const createdAt = format(new Date(), "dd.MM.yy 'в' k:mm");
-    // const newPost = { ...createPost, createdAt };
     const newPost = new this.postModel({ ...createPost, createdAt });
-    const res = await sendMessageToQueue(JSON.stringify(newPost));
-    console.log(res)
     if (!file) {
+    const res = await this.messageProducer.sendMessageToQueue(JSON.stringify(newPost));
+    console.log(res)
     newPost.save();
       return {
         statusCode: 201,
-        // message:  res,
+        message:  "Ok",
+        newPost
       };
     } else {
       const validFormats = ['image/jpeg', 'image/png', 'image/gif'];
@@ -58,7 +59,8 @@ export class PostsService {
       newPost.save();
       return {
         statusCode: 201,
-        // message:  res,
+        message: "ok",
+        newPost
       };
     }
   }
