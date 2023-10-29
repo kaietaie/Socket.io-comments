@@ -3,11 +3,15 @@
     "turbo": "^1.10.15"
   },
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "dotenv -- turbo run dev",
     "build": "turbo run build",
     "start": "node apps/api/dist/main"
   },
   "workspaces": [
     "apps/*"
-  ]
+  ],
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "dotenv-cli": "^7.3.0"
+  }
 }

@@ -1,10 +1,12 @@
 import * as AWS from 'aws-sdk';
 import 'dotenv/config';
-
-
+import { AppService } from './app.service';
+import { ConfigService } from '@nestjs/config';
+const configService = new ConfigService()
+const appService = new AppService(configService);
 
 AWS.config.update({
-  region: process.env.region,
+  region: appService.region,
   accessKeyId:  process.env.ACCESSKEYID,
   secretAccessKey: process.env.SECRETACCESSKEY,
 });

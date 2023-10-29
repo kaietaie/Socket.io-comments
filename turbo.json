@@ -1,10 +1,17 @@
 {
     "$schema": "https://turborepo.org/schema.json",
+    "globalDotEnv": [".env"],
     "pipeline": {
         "dev": {
-            "cache": false
+            "cache": false,
+            "dotEnv": [
+                ".env"
+            ]
         },
         "build": {
+            "dotEnv": [
+                ".env"
+            ],
             "dependsOn": [
                 "^build"
             ],
