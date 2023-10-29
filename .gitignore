@@ -1,4 +1,6 @@
 .env
+/apps/api/.env
+/apps/api/src/.env
 # compiled output
 /dist
 /node_modules
