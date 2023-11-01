@@ -7,7 +7,7 @@ import { MessageProducer } from 'src/aws-sqs/producer.service';
 
 @Module({
     providers: [
-        PostsService, MessageProducer
+        PostsService, MessageProducer,
         ],
     controllers: [PostsController],
     imports: [

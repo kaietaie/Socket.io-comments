@@ -8,18 +8,12 @@ import { PostGraphModule } from './graphql/post.graph.module';
 import { PostModule } from './express/post.module';
 import { ConfigModule } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
-import { CognitoAuthModule } from "@nestjs-cognito/auth";
 import { SQSModule } from './aws-sqs/sqs.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    // CognitoAuthModule.register({
-    //   jwtVerifier: {
-    //     userPoolId: "eu-central-1_jcneAGtZe",
-    //     clientId: "api1fc2f33b",
-    //     tokenUse: "id",
-    //   }
-    // }),
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true, 
       envFilePath: '../../../.env',

@@ -1,21 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Menu = () => {
   const { pathname } = useLocation();
-
-  if (pathname === "/registration") {
-  }
+  const auth = useAuth();
+  console.log(auth)
   return (
     <nav>
+
       <ul className="menu-ul">
-        <li
-          className={
-            pathname === "/login" || pathname === "/registration"
-              ? "active"
-              : ""
-          }
-        >
-          <Link to="/login">Login</Link>
+        <li className={pathname === "/login" ? "active" : ""}>
+          <Link to="/login">Увійти</Link>
         </li>
         <li className={pathname === "/" ? "active" : ""}>
           <Link to="/">Express</Link>
@@ -29,3 +24,4 @@ const Menu = () => {
 };
 
 export default Menu;
+ 
