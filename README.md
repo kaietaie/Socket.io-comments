@@ -18,3 +18,4 @@ SPA: Comments
 ### How to start Docker
 1. docker build .
 2. docker run -i -p 5173:5173 -p 3000:3000  image_name 
+
