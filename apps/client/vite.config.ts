@@ -6,13 +6,13 @@ export default ({ mode }) => {
   process.env = {...process.env, ...loadEnv(mode, process.cwd())};
 
   return defineConfig({
-    // To access env vars here use process.env.PORT
+    // To access env vars here use process.env.VITE_PORT
     plugins: [react()],
     server: {
       host: true,
       proxy: {
         '/api': {
-          target: 'http://localhost:3000',
+          target: process.env.VITE_HOST + ':' + process.env.VITE_PORTAPI,
           changeOrigin: true
         }
       },
