@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { Post } from "../interfaces";
+import { PostGraph } from "../interfaces";
 import emailValidation from "../safety/validationEmail";
 import escapeHtml from "../safety/escapeHTML";
 import validateText from "../safety/validateText";
 import { useMutation } from "@apollo/client";
 import { ADD_POST } from "./posts";
+import { TextField } from "@mui/material";
 
 const AddPost = (id?: any) => {
   const [user, setUser] = useState("");
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [homePage, setHomePage] = useState("");
-  const [file, setFile] = useState<Express.Multer.File | null>(null);
+  // const [file, setFile] = useState<Express.Multer.File | null>(null);
   const [isPosted, setIsPosted] = useState(false);
 
   const [MakePost, { loading }] = useMutation(ADD_POST);
@@ -25,14 +26,14 @@ const AddPost = (id?: any) => {
       const safetyHP = validateText(homePage) || "";
       const safetyEmail = emailValidation(email) || "";
 
-      const post: Post = {
+      const post: PostGraph = {
         user: safetyUser,
         email: safetyEmail,
         text: safetyText,
         homePage: safetyHP,
         createdAt: "",
         parentPost: id.id || "",
-        file,
+        // file,
       };
 
       MakePost({ variables: { $data: post } });
@@ -49,13 +50,21 @@ const AddPost = (id?: any) => {
     return (
       <div className="post-form">
         <form onSubmit={handleSubmit}>
-          <input
+         <TextField
+            label="Ваше ім'я"
             type="text"
             placeholder="Ваше ім'я"
             value={user}
             required
             onChange={(event) => setUser(event.target.value)}
-          />
+            />
+            {/* <input
+            type="text"
+            placeholder="Ваше ім'я"
+            value={user}
+            required
+            onChange={(event) => setUser(event.target.value)}
+          /> */}
           <input
             type="email"
             placeholder="Ваша пошта"
@@ -75,12 +84,12 @@ const AddPost = (id?: any) => {
             required
             onChange={(event) => setText(event.target.value)}
           />
-          <input
+          {/* <input
             type="file"
             name="image"
             accept=".jpg, .gif, .png, .txt"
             onChange={(e) => setFile(e.target.files[0]) }
-          ></input>
+          ></input> */}
           <button type="submit">Відправити</button>
         </form>
       </div>

@@ -11,7 +11,6 @@ export class PostService {
   ) {}
 
   async getAllPosts(): Promise<Posts[]> {
-    console.log(process.env.AWSREGION);
     return this.postModel.find().exec();
   }
 

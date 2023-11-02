@@ -4,7 +4,7 @@ import Menu from "./menu";
 import { Route, Routes } from "react-router-dom";
 import Graph from "./with-graphql/postsGraphql";
 import "@aws-amplify/ui-react/styles.css";
-import PersistLogin from "./components/PersistLogin";
+// import PersistLogin from "./components/PersistLogin";
 import LoginComponent from "./components/LoginComponent";
 import RegistrationComponent from "./components/RegistrationComponent";
 

@@ -12,9 +12,10 @@ export class MessageProducer {
             id: randomUUID(),
             body: messageBody
         }
-      await this.sqsService.send('MySQS', message);
+      const sqsRes = await this.sqsService.send('MySQS', message);
+      return sqsRes
     } catch (error) {
-      console.log('error in pushing to SQS!', error);
+      return `Error in pushing to SQS! ${error}`;
     }
   }
 }

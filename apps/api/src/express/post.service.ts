@@ -6,12 +6,16 @@ import { Posts, PostsDocument } from './schemas/post.schema';
 import { format } from 'date-fns';
 import { createWriteStream } from 'fs';
 import { MessageProducer } from 'src/aws-sqs/producer.service';
+import { AuthService } from 'src/auth/auth.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectModel(Posts.name) private postModel: Model<PostsDocument>,
     private readonly messageProducer: MessageProducer,
+    private authService: AuthService,
+    private usersServise: UsersService,
   ) {}
 
   async getAllPosts(): Promise<Posts[]> {
@@ -24,11 +28,17 @@ export class PostsService {
 
   async createPost(
     // file: Express.Multer.File,
-    createPost: CreatePostDTO,
+    req: Request,
   ): Promise<object> {
+    const createPost = req.body
     const createdAt = format(new Date(), "dd.MM.yy 'в' k:mm");
-  
-    const newPost = new this.postModel({ ...createPost, createdAt });
+    //@ts-ignore
+    const token = (req.headers.authorization).slice(7);
+    const user = await this.authService.getUserFromToken(token);
+    //@ts-ignore
+    const newPost = new this.postModel({ ...createPost, createdAt, user: user.username });
+    //@ts-ignore
+    await this.usersServise.addPostToUser(user.id, newPost._id)
     // if (!file) {
     const res = await this.messageProducer.sendMessageToQueue(JSON.stringify(newPost));
     console.log("sendMessageToQueue ", res)

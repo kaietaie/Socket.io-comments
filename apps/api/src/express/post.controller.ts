@@ -48,9 +48,6 @@ export class PostsController {
     // @UploadedFile( ) file: Express.Multer.File,
     @Request() req,
   ): Promise<object> {
-    console.dir(req)
-    const user = "sa"
-    return {User: user}
-    // return this.postsService.createPost(req);
+    return this.postsService.createPost(req);
   }
 }

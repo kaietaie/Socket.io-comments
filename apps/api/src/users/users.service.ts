@@ -17,7 +17,7 @@ export class UsersService {
   }
 
   async findById(id: string) {
-    const user = await this.userModel.find({id} );
+    const user = await this.userModel.find({ id });
 
     return user;
   }
@@ -26,7 +26,6 @@ export class UsersService {
     const { email } = createUser;
     const exist = await this.userModel.find({ email });
     if (exist.length === 0) {
-
       const newUser = new this.userModel(createUser);
       newUser.save();
       return {
@@ -39,5 +38,14 @@ export class UsersService {
         statusCode: 409,
         message: 'User already exist',
       };
+  }
+
+  async addPostToUser(userId: string, postId: string) {
+    const newPost = { $push: { posts: postId } };
+    await this.userModel.updateOne(
+      { _id: userId },
+      newPost,
+      { new: false }, // Return the updated user document
+    );
   }
 }

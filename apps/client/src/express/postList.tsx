@@ -4,21 +4,25 @@ import { PostMongo } from "../interfaces";
 import CommentsThread from "./readComments";
 import { WebSocketContext } from "../context/WebSocketContext";
 import useAuth from "../hooks/useAuth";
-axios.defaults.baseURL = 'http://localhost:3000'; 
 
 const PostList = () => {
   const [posts, setPosts] = useState<PostMongo[]>([]);
   const [loading, setLoading] = useState(false);
   const socket = useContext(WebSocketContext);
-  const { auth } = useAuth()
+  //@ts-ignore
+  const { auth } = useAuth();
 
   const fetchPosts = () => {
     axios
-      .get<PostMongo[]>("/api/posts", {
-        headers: { 
-          "content-type": "application/json", 
-          Authorization: "Bearer " + auth.accessToken },
-      })
+      .get<PostMongo[]>(
+        `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORTAPI}/api/posts`,
+        {
+          headers: {
+            "content-type": "application/json",
+            Authorization: "Bearer " + auth.accessToken,
+          },
+        }
+      )
       .then((response) => {
         setPosts(response.data);
         setLoading(false);
@@ -32,8 +36,10 @@ const PostList = () => {
     // Function to handle new posts received from WebSocket
 
     const handleNewPost = () => {
-      console.log("on handleNewPost function");
-      fetchPosts();
+      console.log("Received new post via WebSocket");
+      setTimeout(() => {
+        fetchPosts();
+      }, 1000);
     };
 
     // Subscribe to the "newPost" event from the WebSocket
@@ -46,20 +52,23 @@ const PostList = () => {
       // Clean up the WebSocket subscription when the component unmounts
       socket.off("onPost", handleNewPost);
     };
-  }, [socket]);
+  }, [socket, auth.accessToken]);
 
   if (loading) {
-    return <div>Loading...Please wait</div>;
+    return <div>Завантаження...Почекайте будь ласка</div>;
   }
 
-  if (posts.length === 0) {
-    return <div>No posts found.</div>;
+  if (Array.isArray(posts) && posts.length > 0) {
+    return (
+      <div>
+        <h1>Коментарі</h1>
+        <CommentsThread comments={posts} />
+      </div>
+    );
   }
-
   return (
     <div>
-      <h1>Posts</h1>
-      <CommentsThread comments={posts} />
+      <h2>Увійдіть щоб побачити коментарі</h2>
     </div>
   );
 };

@@ -5,11 +5,11 @@ import axios from "axios";
 
 const EMAIL_REGEX = /^[A-z][@.][A-z0-9-_]{3,24}$/;
 const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,12}$/;
-const REGISTER_URL = "http://localhost:3000/api/auth/signup";
+const REGISTER_URL = `${import.meta.env.HOST}:${import.meta.env.PORTAPI}/api/auth/signup`;
 
 const RegistrationComponent = () => {
-  const userRef = useRef();
-  const errRef = useRef();
+  const userRef = useRef<HTMLInputElement | null>(null);
+  const errRef = useRef<HTMLParagraphElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/user-page";
@@ -26,9 +26,8 @@ const RegistrationComponent = () => {
   const [validMatch, setValidMatch] = useState(false);
 
   const [errMsg, setErrMsg] = useState("");
-
   useEffect(() => {
-    userRef.current.focus();
+    userRef.current?.focus();
   }, []);
 
   useEffect(() => {
@@ -48,6 +47,7 @@ const RegistrationComponent = () => {
     e.preventDefault();
 console.log({ username, userEmail, password, homePage })
     try {
+      console.log(REGISTER_URL)
       const res = await axios.post(
         REGISTER_URL,
         JSON.stringify({ username, userEmail, password, homePage }),
@@ -66,7 +66,7 @@ console.log({ username, userEmail, password, homePage })
     } catch (err) {
       setErrMsg("Registration Failed");
     }
-    errRef.current.focus();
+    errRef.current?.focus();
   };
 
   return (

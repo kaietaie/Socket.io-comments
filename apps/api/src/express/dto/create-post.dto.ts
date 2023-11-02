@@ -5,7 +5,9 @@ export class CreatePostDTO {
     @IsNotEmpty()
     text: string;
 
-    readonly createdAt: string;
+    user: string;
+
+    createdAt: string;
 
     parentPost: string;
 

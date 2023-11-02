@@ -4,9 +4,12 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 
-const LOGIN_URL = "api/auth/login";
+const LOGIN_URL = `${import.meta.env.VITE_HOST}:${
+  import.meta.env.VITE_PORTAPI
+}/api/auth/login`;
 
 const LoginComponent = () => {
+  //@ts-ignore
   const { setAuth, persist, setPersist } = useAuth();
 
   const navigate = useNavigate();
@@ -27,7 +30,7 @@ const LoginComponent = () => {
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
-
+//@ts-ignore
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -39,7 +42,6 @@ const LoginComponent = () => {
           withCredentials: true,
         }
       );
-      console.log(persist)
       const accessToken = response.data.access_token;
       setAuth({ accessToken });
       setEmail("");
@@ -52,9 +54,9 @@ const LoginComponent = () => {
     //    errRef.current.focus();
   };
 
-  const togglePersist = () => {
-    setPersist((prev) => !prev);
-  };
+  // const togglePersist = () => {
+  //   setPersist((prev) => !prev);
+  // };
 
   useEffect(() => {
     localStorage.setItem("persist", persist);
@@ -63,6 +65,7 @@ const LoginComponent = () => {
   return (
     <section className="form-container">
       <p
+      //@ts-ignore
         ref={errRef}
         className={errMsg ? "error-message" : "offscreen"}
         aria-live="assertive"
@@ -72,6 +75,7 @@ const LoginComponent = () => {
       <h1>Вхід</h1>
       <form className="form">
         <TextField
+          fullWidth
           required
           inputRef={userEmailRef}
           label="Ел. пошта"
@@ -83,6 +87,7 @@ const LoginComponent = () => {
           margin="normal"
         />
         <TextField
+          fullWidth
           required
           label="Пароль"
           type="password"

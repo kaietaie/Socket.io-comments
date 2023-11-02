@@ -1,13 +1,18 @@
 export interface Post {
-    user: string;
-    email: string;
-    text: string;
-    createdAt: string;
-    parentPost: string;
-    file: Express.Multer.File | null;
-  }
+  text: string;
+  parentPost: string;
+  // file: Express.Multer.File | null;
+}
 
 export interface PostMongo extends Post {
-    _id: string;
-  }
+  _id: string;
+  user: string;
+  createdAt: string;
+}
 
+export interface PostGraph extends Post {
+  user: string;
+  homePage: string;
+  email: string;
+  createdAt: string;
+}
