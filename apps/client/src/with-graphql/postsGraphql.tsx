@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { ALL_POSTS } from "./posts"
-import CommentsThread from "../express/readComments";
+import CommentsThread from "./readComments";
 import AddPost from "./addPost";
 
 

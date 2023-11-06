@@ -8,10 +8,12 @@ import { ConfigModule } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
 import { SQSModule } from './aws-sqs/sqs.module';
 import { AuthModule } from './auth/auth.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
     AuthModule,
+    CacheModule.register(),
     ConfigModule.forRoot({
       isGlobal: true, 
       envFilePath: '../../../.env',

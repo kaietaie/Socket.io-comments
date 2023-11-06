@@ -18,3 +18,7 @@ export default function validateText(inputText: string): string {
     return isTextValid ? sanitizedText : '';
   }
   
+// export const validateText = {
+//   ALLOWED_TAGS: ['a', 'code', 'i', 'strong'],
+//     ALLOWED_ATTR: ['href', 'title'],
+// }

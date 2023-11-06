@@ -13,7 +13,6 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(helmet());
-console.log("cors ",`${config.HOST}:${config.PORTCLIENT}` )
   await app.listen(3000);
 }
 bootstrap();

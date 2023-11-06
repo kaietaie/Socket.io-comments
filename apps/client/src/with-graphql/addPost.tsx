@@ -5,21 +5,21 @@ import escapeHtml from "../safety/escapeHTML";
 import validateText from "../safety/validateText";
 import { useMutation } from "@apollo/client";
 import { ADD_POST } from "./posts";
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 
 const AddPost = (id?: any) => {
   const [user, setUser] = useState("");
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [homePage, setHomePage] = useState("");
-  // const [file, setFile] = useState<Express.Multer.File | null>(null);
+  const [file, setFile] = useState<Express.Multer.File | null>(null);
   const [isPosted, setIsPosted] = useState(false);
 
   const [MakePost, { loading }] = useMutation(ADD_POST);
-  
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
+
     try {
       const safetyUser = escapeHtml(user);
       const safetyText = validateText(text);
@@ -33,7 +33,7 @@ const AddPost = (id?: any) => {
         homePage: safetyHP,
         createdAt: "",
         parentPost: id.id || "",
-        // file,
+        file,
       };
 
       MakePost({ variables: { $data: post } });
@@ -49,37 +49,41 @@ const AddPost = (id?: any) => {
   if (!isPosted) {
     return (
       <div className="post-form">
-        <form onSubmit={handleSubmit}>
-         <TextField
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1 },
+          }}
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
+          <TextField
             label="Ваше ім'я"
             type="text"
             placeholder="Ваше ім'я"
             value={user}
             required
             onChange={(event) => setUser(event.target.value)}
-            />
-            {/* <input
-            type="text"
-            placeholder="Ваше ім'я"
-            value={user}
-            required
-            onChange={(event) => setUser(event.target.value)}
-          /> */}
-          <input
+          />
+
+          <TextField
+            label="Ваша пошта"
             type="email"
             placeholder="Ваша пошта"
             value={email}
             required
             onChange={(event) => setEmail(event.target.value)}
           />
-          <input
+          <TextField
+            label="Home page"
             type="url"
             placeholder="Home page "
             value={homePage}
             onChange={(event) => setHomePage(event.target.value)}
           />
-          <textarea
+          <TextField
             placeholder="Введіть текст тут"
+            fullWidth
             value={text}
             required
             onChange={(event) => setText(event.target.value)}
@@ -91,7 +95,7 @@ const AddPost = (id?: any) => {
             onChange={(e) => setFile(e.target.files[0]) }
           ></input> */}
           <button type="submit">Відправити</button>
-        </form>
+        </Box>
       </div>
     );
   } else {

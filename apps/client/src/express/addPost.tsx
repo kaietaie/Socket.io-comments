@@ -13,9 +13,19 @@ const AddPost = (id?: any) => {
   const [text, setText] = useState("");
   // const [email, setEmail] = useState("");
   // const [homePage, setHomePage] = useState("");
-  // const [file, setFile] = useState<Express.Multer.File | null>(null);
+  const [file, setFile] = useState<Express.Multer.File | null>(null);
   const [isPosted, setIsPosted] = useState(false);
-
+  const [postResponse, setPostResponse] = useState<string>("");
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const upload = event.target.files[0];
+      console.log("upload")
+      console.log("upload", upload)
+      //@ts-ignore
+      setFile(upload);
+    }
+  };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -24,60 +34,82 @@ const AddPost = (id?: any) => {
       const post: Post = {
         text: safetyText,
         parentPost: id.id || "",
-        // file,
+        file,
       };
-
-      axios.defaults.baseURL =  `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORTAPI}/api`;
+      console.log('post', post)
+      
+      axios.defaults.baseURL = `${import.meta.env.VITE_HOST}:${
+        import.meta.env.VITE_PORTAPI
+      }/api`;
 
       const response = await axios.post("/posts", post, {
         headers: {
-          "content-type": "application/json",
+          "content-type": "multipart/form-data",
           Authorization: "Bearer " + auth.accessToken,
         },
       });
+      setPostResponse(response.data.message);
+      setTimeout(()=>{
+        setPostResponse('')
+      },1000)
       if (response.status === 201) {
         setText("");
         socket.emit("newPost");
-        setIsPosted(true)
+        setIsPosted(true);
       }
     } catch (error) {
       console.error("Error whith posting your post");
     }
   };
-  while (!id.id || !isPosted)
-  {
-    
-  
+
+  while (!id.id || !isPosted) {
     return (
-      <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1 },
-      }}
-      onSubmit={handleSubmit}
-      autoComplete="off"
-      >
-      <div  className="post-form">
-          <TextField
-            placeholder="Введіть текст тут"
-            fullWidth
-            value={text}
-            required
-            multiline
-            rows={4}
-            onChange={(event) => setText(event.target.value)}
+      <div>
+        {postResponse.length > 1 ? (
+          <div >
+            <span className="post-response">{postResponse}</span>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        <Box
+          component="form"
+          sx={{
+            "& .MuiTextField-root": { m: 1 },
+          }}
+          onSubmit={handleSubmit}
+          autoComplete="off"
+        >
+          <div className="post-form">
+            <TextField
+              placeholder="Введіть текст тут"
+              fullWidth
+              value={text}
+              required
+              multiline
+              rows={4}
+              onChange={(event) => setText(event.target.value)}
             />
-          {/* <input
-            type="file"
-            name="image"
-            accept=".jpg, .gif, .png, .txt"
-            onChange={(event) => setFile(event.target.files[0])}
-            ></input> */}
-          <button type="submit">Відправити</button>
+            <input
+              type="file"
+              name="file"
+              accept=".jpg, .gif, .png, .txt"
+              onChange={handleFileChange}
+              value={file?.originalname}
+            ></input>
+            <button type="submit">Відправити</button>
+          </div>
+        </Box>
       </div>
-      </Box>
     );
-} 
-}
-  
-  export default AddPost;
+  }
+  if (postResponse) {
+    return (
+      <div>
+        <span className="post-response">{postResponse}</span>
+      </div>
+    );
+  }
+};
+
+export default AddPost;

@@ -23,14 +23,15 @@ const LoginComponent = () => {
   const [password, setPass] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
-  //   useEffect(() => {
-  //     userEmailRef.current.focus();
-  //   }, []);
+  useEffect(() => {
+    //@ts-ignore
+    userEmailRef.current.focus();
+  }, []);
 
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
-//@ts-ignore
+  //@ts-ignore
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -43,15 +44,21 @@ const LoginComponent = () => {
         }
       );
       const accessToken = response.data.access_token;
-      setAuth({ accessToken });
-      setEmail("");
-      setPass("");
-      navigate(from, { replace: true });
+
+      if (accessToken.length !== 0) {
+        setAuth({ accessToken });
+        setEmail("");
+        setPass("");
+        navigate(from, { replace: true });
+      } else {
+        setErrMsg("Login Failed");
+      }
     } catch (err) {
       setErrMsg("Login Failed");
     }
 
-    //    errRef.current.focus();
+    //@ts-ignore
+    errRef.current.focus();
   };
 
   // const togglePersist = () => {
@@ -65,7 +72,7 @@ const LoginComponent = () => {
   return (
     <section className="form-container">
       <p
-      //@ts-ignore
+        //@ts-ignore
         ref={errRef}
         className={errMsg ? "error-message" : "offscreen"}
         aria-live="assertive"

@@ -16,7 +16,7 @@
                 "^build"
             ],
             "outputs": [
-                "dist/**"
+                "/apps/api/dist/**"
             ]
         }
     }

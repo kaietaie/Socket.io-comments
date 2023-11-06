@@ -13,9 +13,12 @@ SPA: Comments
 
 ### How to start project without Docker
 1. `npm install` from root directory
-2. `npm run dev` from root directory
+2. `npm run dev` from root directory   
+
+    Also you can build project with `npm run build` and run it with `npm run start`. 
+    After this open in browser [localhost:3000](http://localhost:3000).
 
 ### How to start Docker
 1. docker build .
-2. docker run -i -p 5173:5173 -p 3000:3000  image_name 
+2. docker run -p 3000:3000  image_name 
 

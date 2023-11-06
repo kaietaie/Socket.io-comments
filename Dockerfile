@@ -3,9 +3,11 @@ FROM node:lts
 WORKDIR /app
 
 COPY . .
+COPY .env /app/.env
 
 RUN npm install
+RUN npm run build
 
-EXPOSE 5173 3000
+EXPOSE 3000 80 443
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, Length } from "class-validator";
+import { IsNotEmpty } from "class-validator";
 
 export class CreatePostDTO {
     

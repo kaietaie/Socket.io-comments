@@ -5,8 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Posts, PostsSchema } from './schemas/post.schema';
 import { MessageProducer } from 'src/aws-sqs/producer.service';
 import { AuthService } from 'src/auth/auth.service';
-import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   providers: [PostsService, MessageProducer, AuthService],
@@ -14,6 +15,13 @@ import { UsersModule } from 'src/users/users.module';
   imports: [
     UsersModule,
     MongooseModule.forFeature([{ name: Posts.name, schema: PostsSchema }]),
+    CacheModule.register({
+      tll:360000,
+      isGlobal: true,
+    }),
+    MulterModule.register({
+      dest: './uploads'
+    }),
   ],
 })
 export class PostModule {}

@@ -1,7 +1,7 @@
 export interface Post {
   text: string;
   parentPost: string;
-  // file: Express.Multer.File | null;
+  file: Express.Multer.File | null;
 }
 
 export interface PostMongo extends Post {

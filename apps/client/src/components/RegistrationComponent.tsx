@@ -5,18 +5,18 @@ import axios from "axios";
 
 const EMAIL_REGEX = /^[A-z][@.][A-z0-9-_]{3,24}$/;
 const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,12}$/;
-const REGISTER_URL = `${import.meta.env.HOST}:${import.meta.env.PORTAPI}/api/auth/signup`;
+const REGISTER_URL = `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORTAPI}/api/auth/signup`;
 
 const RegistrationComponent = () => {
   const userRef = useRef<HTMLInputElement | null>(null);
   const errRef = useRef<HTMLParagraphElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/user-page";
+  const from = location.state?.from?.pathname || "/";
 
   const [username, setusername] = useState("");
   const [homePage, setHomePage] = useState("");
-  const [userEmail, setUserEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
 
   const [password, setPassword] = useState("");
@@ -31,8 +31,8 @@ const RegistrationComponent = () => {
   }, []);
 
   useEffect(() => {
-    setValidEmail(!EMAIL_REGEX.test(userEmail));
-  }, [userEmail]);
+    setValidEmail(!EMAIL_REGEX.test(email));
+  }, [email]);
 
   useEffect(() => {
     setValidPass(!PASS_REGEX.test(password));
@@ -41,30 +41,30 @@ const RegistrationComponent = () => {
 
   useEffect(() => {
     setErrMsg("");
-  }, [userEmail, password, matchPass]);
+  }, [email, password, matchPass]);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-console.log({ username, userEmail, password, homePage })
+console.log({ username, email, password, homePage })
     try {
       console.log(REGISTER_URL)
       const res = await axios.post(
         REGISTER_URL,
-        JSON.stringify({ username, userEmail, password, homePage }),
+        JSON.stringify({ username, email, password, homePage }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
       console.log({res})
-      //clear state and controlled inputs
+
       setusername("");
-      setUserEmail("");
+      setEmail("");
       setPassword("");
       setMatchPass("");
       navigate(from, { replace: true });
     } catch (err) {
-      setErrMsg("Registration Failed");
+      setErrMsg(`Registration Failed, ${err}`);
     }
     errRef.current?.focus();
   };
@@ -91,11 +91,11 @@ console.log({ username, userEmail, password, homePage })
         <TextField
           required
           label="Ел. пошта"
-          id="userEmail"
+          id="email"
           name="email"
           type="email"
-          onChange={(e) => setUserEmail(e.target.value)}
-          value={userEmail}
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
           margin="normal"
           autoComplete="off"
           aria-invalid={validEmail ? "false" : "true"}
