@@ -7,12 +7,14 @@ import {
   Request,
   UseGuards,
   UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { PostsService } from './post.service';
 import { Posts } from './schemas/post.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from 'src/auth/auth.service';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @UseInterceptors(CacheInterceptor)
@@ -20,13 +22,12 @@ import { CacheInterceptor } from '@nestjs/cache-manager';
 export class PostsController {
   constructor(
     private readonly postsService: PostsService,
-    private authService: AuthService,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  getAllPosts(@Request() req): Promise<Posts[]> {
-    return this.postsService.getAllPosts(req);
+  getAllPosts(): Promise<Posts[]> {
+    return this.postsService.getAllPosts();
   }
 
   @Get(':id')
@@ -36,13 +37,19 @@ export class PostsController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async createNewPost(@Request() req): Promise<object> {
-    return this.postsService.createPost(req);
+  async createNewPost(
+    @Request() req,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 102400 }),
+          new FileTypeValidator({ fileType: /(jpg|jpeg|png|gif|txt)$/ }),
+        ],
+      }),
+      )
+      file: Express.Multer.File,
+      ): Promise<object> {
+    return this.postsService.createPost(req, file);
   }
 
-  @Post('upload')
-@UseInterceptors(FileInterceptor('file'))
-uploadFile(@UploadedFile() file: Express.Multer.File) {
-  console.log(file);
-}
 }

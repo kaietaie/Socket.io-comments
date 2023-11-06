@@ -16,12 +16,12 @@ const AddPost = (id?: any) => {
   const [file, setFile] = useState<Express.Multer.File | null>(null);
   const [isPosted, setIsPosted] = useState(false);
   const [postResponse, setPostResponse] = useState<string>("");
-  
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const upload = event.target.files[0];
-      console.log("upload")
-      console.log("upload", upload)
+      console.log("upload");
+      console.log("upload", upload);
       //@ts-ignore
       setFile(upload);
     }
@@ -34,24 +34,27 @@ const AddPost = (id?: any) => {
       const post: Post = {
         text: safetyText,
         parentPost: id.id || "",
-        file,
       };
-      console.log('post', post)
-      
+      console.log("post", post);
+
       axios.defaults.baseURL = `${import.meta.env.VITE_HOST}:${
         import.meta.env.VITE_PORTAPI
       }/api`;
 
-      const response = await axios.post("/posts", post, {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: "Bearer " + auth.accessToken,
-        },
-      });
+      const response = await axios.post(
+        "/posts",
+        { post, file },
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: "Bearer " + auth.accessToken,
+          },
+        }
+      );
       setPostResponse(response.data.message);
-      setTimeout(()=>{
-        setPostResponse('')
-      },1000)
+      setTimeout(() => {
+        setPostResponse("");
+      }, 1000);
       if (response.status === 201) {
         setText("");
         socket.emit("newPost");
@@ -66,7 +69,7 @@ const AddPost = (id?: any) => {
     return (
       <div>
         {postResponse.length > 1 ? (
-          <div >
+          <div>
             <span className="post-response">{postResponse}</span>
           </div>
         ) : (
@@ -74,9 +77,10 @@ const AddPost = (id?: any) => {
         )}
         <Box
           component="form"
-          sx={{
-            "& .MuiTextField-root": { m: 1 },
-          }}
+          height={"180px"}
+          maxWidth={"600px"}
+          m={3}
+          p={2}
           onSubmit={handleSubmit}
           autoComplete="off"
         >

@@ -19,7 +19,7 @@ export class AuthService {
     }
 
     const userResp = await this.usersService.findOne(email);
-    if(userResp.length === 0 ) {
+    if (userResp.length === 0) {
       return { error: 'User not found' };
     }
     const user = userResp[0]['_doc'];
@@ -32,14 +32,13 @@ export class AuthService {
       username: user.username,
       email: user.email,
     };
-  
+
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
 
   async signUp(createUser: CreateUserDTO): Promise<object> {
-    console.log(createUser)
     return this.usersService.createUser(createUser);
   }
 

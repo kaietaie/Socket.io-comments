@@ -6,8 +6,7 @@ COPY . .
 COPY .env /app/.env
 
 RUN npm install
-RUN npm run build
 
-EXPOSE 3000 80 443
+EXPOSE 3000 5173 80 443 
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]

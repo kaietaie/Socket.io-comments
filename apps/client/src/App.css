@@ -36,6 +36,7 @@ a {
 
 .post-form {
   max-width: 100%;
+  overflow:hiden; 
 }
 
 .post-wrapper {
