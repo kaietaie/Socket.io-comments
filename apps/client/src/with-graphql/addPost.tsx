@@ -12,7 +12,7 @@ const AddPost = (id?: any) => {
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [homePage, setHomePage] = useState("");
-  const [file, setFile] = useState<Express.Multer.File | null>(null);
+  // const [file, setFile] = useState<Express.Multer.File | null>(null);
   const [isPosted, setIsPosted] = useState(false);
 
   const [MakePost, { loading }] = useMutation(ADD_POST);
@@ -33,7 +33,6 @@ const AddPost = (id?: any) => {
         homePage: safetyHP,
         createdAt: "",
         parentPost: id.id || "",
-        file,
       };
 
       MakePost({ variables: { $data: post } });

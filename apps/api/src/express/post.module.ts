@@ -23,5 +23,6 @@ import { MulterModule } from '@nestjs/platform-express';
       dest: './uploads'
     }),
   ],
+  exports: [PostsService]
 })
 export class PostModule {}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { PostMongo } from "../interfaces";
-import CommentsThread from "./readComments";
+import CommentsThread from "./renderComments";
 import { WebSocketContext } from "../context/WebSocketContext";
 import useAuth from "../hooks/useAuth";
 
@@ -15,7 +15,9 @@ const PostList = () => {
   const fetchPosts = () => {
     axios
       .get<PostMongo[]>(
-        `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORTAPI}/api/posts`,
+        `${import.meta.env.VITE_HOST}:${
+          import.meta.env.VITE_PORTAPI
+        }/api/posts`,
         {
           headers: {
             "content-type": "application/json",
@@ -32,19 +34,24 @@ const PostList = () => {
         setLoading(false);
       });
   };
-  useEffect(() => {
-    // Function to handle new posts received from WebSocket
+ 
+  const handleNewPost = (res: object) => {
+    console.log("Received new post via WebSocket");
+    //@ts-ignore
+    const { newPost } = res;
+    console.log(posts)
+    console.log(newPost)
+    //@ts-ignore
+    setPosts(posts => [... posts, newPost]);
+    console.log(posts)
+  }; 
 
-    const handleNewPost = () => {
-      console.log("Received new post via WebSocket");
-      setTimeout(() => {
-        fetchPosts();
-      }, 1000);
-    };
+  useEffect(() => {
 
     // Subscribe to the "newPost" event from the WebSocket
-
-    socket.on("onPost", handleNewPost);
+    socket.on("onPost", (res) => {
+      handleNewPost(res);
+    });
 
     // Fetch existing posts from the API
     fetchPosts();

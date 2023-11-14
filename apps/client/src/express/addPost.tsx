@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Post } from "../interfaces";
-import axios from "axios";
+// import axios from "axios";
 import validateText from "../safety/validateText";
 import { socket } from "../context/WebSocketContext";
 import useAuth from "../hooks/useAuth";
@@ -11,19 +11,20 @@ const AddPost = (id?: any) => {
   const { auth } = useAuth();
 
   const [text, setText] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [homePage, setHomePage] = useState("");
   const [file, setFile] = useState<Express.Multer.File | null>(null);
+  const [fileName, setFileName] = useState("");
+  const [fileSize, setFileSize] = useState(0);
   const [isPosted, setIsPosted] = useState(false);
   const [postResponse, setPostResponse] = useState<string>("");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const upload = event.target.files[0];
-      console.log("upload");
       console.log("upload", upload);
       //@ts-ignore
       setFile(upload);
+      setFileName(upload.name);
+      setFileSize(upload.size);
     }
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,33 +36,23 @@ const AddPost = (id?: any) => {
         text: safetyText,
         parentPost: id.id || "",
       };
-      console.log("post", post);
-
-      axios.defaults.baseURL = `${import.meta.env.VITE_HOST}:${
-        import.meta.env.VITE_PORTAPI
-      }/api`;
-
-      const response = await axios.post(
-        "/posts",
-        { post, file },
-        {
-          headers: {
-            "content-type": "multipart/form-data",
-            Authorization: "Bearer " + auth.accessToken,
-          },
+      let uploadfile = {
+        fileName,
+        fileSize,
+        file,
+      };
+      socket.emit(
+        "newPost",
+        { post, uploadfile, authorization: "Bearer " + auth.accessToken },
+        (status: any) => {
+          setPostResponse(status);
         }
       );
-      setPostResponse(response.data.message);
-      setTimeout(() => {
-        setPostResponse("");
-      }, 1000);
-      if (response.status === 201) {
-        setText("");
-        socket.emit("newPost");
-        setIsPosted(true);
-      }
+      setText("");
+      setFile(null);
+      setIsPosted(true);
     } catch (error) {
-      console.error("Error whith posting your post");
+      console.error("Error whith posting your post", error);
     }
   };
 

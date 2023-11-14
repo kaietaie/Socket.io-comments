@@ -8,6 +8,7 @@ export interface PostMongo extends Post {
   _id: string;
   user: string;
   createdAt: string;
+  filedest: string;
 }
 
 export interface PostGraph extends Post {

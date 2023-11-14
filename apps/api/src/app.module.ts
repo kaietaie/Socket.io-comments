@@ -20,6 +20,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'client', 'dist'),
+      // rootPath: join(__dirname, '../', 'uploads'),
     }),
     MongooseModule.forRoot(
       'mongodb+srv://kaieta:t13zh92wnb@cluster0.sg9jpxp.mongodb.net/?retryWrites=true&w=majority',
