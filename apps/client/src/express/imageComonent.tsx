@@ -14,7 +14,7 @@ const ImageComponent = ({ filedest }: { filedest: string }) => {
         try {
           const response = await axios.get(
             `${import.meta.env.VITE_HOST}:${
-              import.meta.env.VITE_PORTAPI
+              import.meta.env.VITE_PORT
             }/api/posts/file/${filedest}`,
             {
               headers: {

@@ -5,7 +5,7 @@ import axios from "axios";
 
 const EMAIL_REGEX = /^[A-z][@.][A-z0-9-_]{3,24}$/;
 const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,12}$/;
-const REGISTER_URL = `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORTAPI}/api/auth/signup`;
+const REGISTER_URL = `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/auth/signup`;
 
 const RegistrationComponent = () => {
   const userRef = useRef<HTMLInputElement | null>(null);

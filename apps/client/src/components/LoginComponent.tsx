@@ -5,7 +5,7 @@ import useAuth from "../hooks/useAuth";
 import axios from "axios";
 
 const LOGIN_URL = `${import.meta.env.VITE_HOST}:${
-  import.meta.env.VITE_PORTAPI
+  import.meta.env.VITE_PORT
 }/api/auth/login`;
 
 const LoginComponent = () => {

@@ -16,7 +16,7 @@ const PostList = () => {
     axios
       .get<PostMongo[]>(
         `${import.meta.env.VITE_HOST}:${
-          import.meta.env.VITE_PORTAPI
+          import.meta.env.VITE_PORT
         }/api/posts`,
         {
           headers: {

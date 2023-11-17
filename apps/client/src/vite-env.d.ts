@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
   readonly HOST: string
-  readonly POSTAPI: string
+  readonly PORT: string
 }
 
 interface ImportMeta {
