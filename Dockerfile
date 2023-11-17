@@ -10,8 +10,6 @@ ENV SESSIONSECRET="SECRETS SHOULD KEEPS IN SAFE"
 ENV HOST=https://comments-ws-1ff4be10b004.herokuapp.com
 ENV PORTCLIENT=5173
 ENV VITE_HOST=https://comments-ws-1ff4be10b004.herokuapp.com
-ENV VITE_PORTAPI=3000
-ENV PORT=3000
 
 COPY package*.json ./
 
