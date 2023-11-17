@@ -11,6 +11,7 @@ ENV HOST=http://localhost
 ENV PORTCLIENT=5173
 ENV VITE_HOST=http://localhost
 ENV VITE_PORTAPI=3000
+ENV PORT=3000
 
 COPY package*.json ./
 
