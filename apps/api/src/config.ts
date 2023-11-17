@@ -15,4 +15,5 @@ export const config = {
   SESSIONSECRET: process.env.SESSIONSECRET,
   HOST: process.env.HOST,
   PORTCLIENT: process.env.PORTCLIENT,
+  PORT:process.env.PORT
 };

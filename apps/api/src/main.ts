@@ -13,6 +13,6 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(helmet());
-  await app.listen(3000);
+  await app.listen(config.PORT);
 }
 bootstrap();
