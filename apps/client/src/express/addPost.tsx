@@ -25,6 +25,8 @@ const AddPost = (id?: any) => {
       setFile(upload);
       setFileName(upload.name);
       setFileSize(upload.size);
+
+      console.log(upload)
     }
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

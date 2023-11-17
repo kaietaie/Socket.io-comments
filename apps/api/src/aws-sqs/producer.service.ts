@@ -13,6 +13,7 @@ export class MessageProducer {
             body: messageBody
         }
       const sqsRes = await this.sqsService.send('MySQS', message);
+      console.log(sqsRes)
       return sqsRes
     } catch (error) {
       return `Error in pushing to SQS! ${error}`;

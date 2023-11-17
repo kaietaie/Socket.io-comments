@@ -18,6 +18,11 @@
             "outputs": [
                 "/apps/api/dist/**"
             ]
-        }
+        },
+        "start": {
+            "dependsOn": [
+              "^build"
+            ]
+          }
     }
 }

@@ -84,7 +84,7 @@ export class PostsService {
       user: user.username,
       filedest: '',
     });
-
+    console.log(data)
     if (data.uploadfile.fileName.length !== 0) {
       const filedest = await this.upload(data.uploadfile, newPost._id);
       // if (filedest.statusCode === 400) {
@@ -96,10 +96,9 @@ export class PostsService {
 
       newPost.filedest = filedest.fileDestination;
     }
-    const res = await this.messageProducer.sendMessageToQueue(
+    await this.messageProducer.sendMessageToQueue(
       JSON.stringify(newPost),
     );
-
     await this.usersServise.addPostToUser(user.sub, newPost._id);
 
     return {
