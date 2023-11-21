@@ -39,6 +39,10 @@ a {
   overflow:hiden; 
 }
 
+.post-parent-wrapper {
+  margin-top: 3rem;
+}
+
 .post-wrapper {
   margin-top: 10px;
 }
@@ -57,12 +61,13 @@ a {
   padding-top: 20px;
 }
 
-.post img {
-  width: 100px;
-  height: 100px;
+.user-image{
+  width: 55px !important;
+  height: 55px !important;
   border-radius: 50%;
   float: left;
-  margin-right: 20px;
+  margin-top: -15px;
+  margin-right: 10px;
 }
 
 .post-header {
@@ -80,30 +85,25 @@ a {
   font-size: 14px;
   color: #999;
 }
+.post-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.post-text-file {
+  text-decoration: overline;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
 
 .post-actions {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
-}
-
-.post-actions .like-button,
-.post-actions .comment-button {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.post-likes {
-  margin-top: 20px;
-}
-
-.post-likes p {
-  font-size: 14px;
-  color: #999;
 }
 
 .post-comments {
@@ -159,8 +159,14 @@ a {
 }
 .error-message {
   color: #801818;
+  font-weight: 700;
 }
 
 .post-response {
   color:green;
+}
+
+.post-image {
+  max-width: 320px;
+  max-height: 240px;
 }

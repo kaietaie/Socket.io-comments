@@ -4,10 +4,12 @@ import { PostMongo } from "../interfaces";
 import CommentsThread from "./renderComments";
 import { WebSocketContext } from "../context/WebSocketContext";
 import useAuth from "../hooks/useAuth";
+import { url } from "../urlToBE";
 
 const PostList = () => {
   const [posts, setPosts] = useState<PostMongo[]>([]);
   const [loading, setLoading] = useState(false);
+  
   const socket = useContext(WebSocketContext);
   //@ts-ignore
   const { auth } = useAuth();
@@ -15,9 +17,7 @@ const PostList = () => {
   const fetchPosts = () => {
     axios
       .get<PostMongo[]>(
-        `${import.meta.env.VITE_HOST}:${
-          import.meta.env.VITE_PORT
-        }/api/posts`,
+        `${url}/api/posts`,
         {
           headers: {
             "content-type": "application/json",
@@ -39,18 +39,25 @@ const PostList = () => {
     console.log("Received new post via WebSocket");
     //@ts-ignore
     const { newPost } = res;
-    console.log(posts)
-    console.log(newPost)
+    
     //@ts-ignore
     setPosts(posts => [... posts, newPost]);
-    console.log(posts)
   }; 
+
+  const handlePostError = (res: object) => {
+    console.log(res)
+
+  };
 
   useEffect(() => {
 
     // Subscribe to the "newPost" event from the WebSocket
     socket.on("onPost", (res) => {
       handleNewPost(res);
+    });
+    socket.on("onPostError", (res) => {
+      console.log("onPostError");
+      handlePostError(res);
     });
 
     // Fetch existing posts from the API
@@ -67,7 +74,7 @@ const PostList = () => {
 
   if (Array.isArray(posts) && posts.length > 0) {
     return (
-      <div>
+      <div className="post-parent-wrapper">
         <h1>Коментарі</h1>
         <CommentsThread comments={posts} />
       </div>

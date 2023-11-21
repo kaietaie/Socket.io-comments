@@ -7,7 +7,6 @@ import { MessageProducer } from 'src/aws-sqs/producer.service';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersModule } from 'src/users/users.module';
 import { CacheModule } from '@nestjs/cache-manager';
-import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   providers: [PostsService, MessageProducer, AuthService],
@@ -18,9 +17,6 @@ import { MulterModule } from '@nestjs/platform-express';
     CacheModule.register({
       tll:360000,
       isGlobal: true,
-    }),
-    MulterModule.register({
-      dest: './uploads'
     }),
   ],
   exports: [PostsService]

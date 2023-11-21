@@ -8,4 +8,4 @@ export const config = {
   HOST: process.env?.HOST,
   PORT:process.env?.PORT || 3000,
   PORTCLIENT: process.env.PORTCLIENT,
-};
+}; 

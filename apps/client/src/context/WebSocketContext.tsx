@@ -1,7 +1,8 @@
 import { createContext } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { url } from '../urlToBE';
 
-export const socket = io( `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}`)
+export const socket = io( `${url}`)
 
 export const WebSocketContext = createContext<Socket>(socket);
 

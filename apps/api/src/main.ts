@@ -9,10 +9,18 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
-    origin: [`${config.HOST }:${config.PORTCLIENT}`, `${config.HOST}:${config.PORT}`,'http://localhost:5000', ],
+    origin: [`${config.HOST }:${config.PORTCLIENT}` , `${config.HOST}:${config.PORT}`,],
     credentials: true,
   });
-  app.use(helmet());
+  app.use(helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+    directives: {
+      "img-src": ["'self'", "https: data: blob:"],
+    }, 
+    },
+  }));
   await app.listen(config.PORT);
 }
 bootstrap();
+

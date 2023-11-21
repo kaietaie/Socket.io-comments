@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Post } from "../interfaces";
-// import axios from "axios";
 import validateText from "../safety/validateText";
 import { socket } from "../context/WebSocketContext";
 import useAuth from "../hooks/useAuth";
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const AddPost = (id?: any) => {
   //@ts-ignore
@@ -16,19 +16,37 @@ const AddPost = (id?: any) => {
   const [fileSize, setFileSize] = useState(0);
   const [isPosted, setIsPosted] = useState(false);
   const [postResponse, setPostResponse] = useState<string>("");
+  const [postError, setPostError] = useState("");
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       const upload = event.target.files[0];
-      console.log("upload", upload);
       //@ts-ignore
-      setFile(upload);
-      setFileName(upload.name);
-      setFileSize(upload.size);
+      const extention = upload.name.split(".").pop().toLowerCase();
+      const validFormats = ["jpeg", "jpg", "png", "gif", "txt"];
 
-      console.log(upload)
+      if (extention === "txt" && upload.size > 102400) {
+        setPostError("Max size 100Kb");
+        setFile(null);
+        setFileName("");
+        setFileSize(0);
+        return;
+      } else if (!validFormats.includes(extention)) {
+        setPostError("Invalid file format");
+        setFile(null);
+        setFileName("");
+        setFileSize(0);
+        return;
+      } else {
+        setPostError('')
+        //@ts-ignore
+        setFile(upload);
+        setFileName(upload.name);
+        setFileSize(upload.size);
+      }
     }
   };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -52,6 +70,7 @@ const AddPost = (id?: any) => {
       );
       setText("");
       setFile(null);
+      setFileName("");
       setIsPosted(true);
     } catch (error) {
       console.error("Error whith posting your post", error);
@@ -70,7 +89,7 @@ const AddPost = (id?: any) => {
         )}
         <Box
           component="form"
-          height={"180px"}
+          height={"220px"}
           maxWidth={"600px"}
           m={3}
           p={2}
@@ -87,14 +106,30 @@ const AddPost = (id?: any) => {
               rows={4}
               onChange={(event) => setText(event.target.value)}
             />
-            <input
-              type="file"
-              name="file"
-              accept=".jpg, .gif, .png, .txt"
-              onChange={handleFileChange}
-              value={file?.originalname}
-            ></input>
-            <button type="submit">Відправити</button>
+            <div className="post-buttons">
+              <div>
+                <Button
+                  component="label"
+                  variant="contained"
+                  startIcon={<CloudUploadIcon />}
+                  sx={{ marginRight: "1rem" }}
+                >
+                  Upload File
+                  <input
+                    hidden
+                    type="file"
+                    name="file"
+                    accept=".jpg, .gif, .png, .txt"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+                {fileName}
+              </div>
+              <Button variant="contained" type="submit">
+                Відправити
+              </Button>
+            </div>
+            <p className="error-message">{postError ? postError : ""}</p>
           </div>
         </Box>
       </div>

@@ -12,11 +12,13 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { CachedUserDTO } from './dto/cached-user.dto';
 import { join } from 'path';
 
+
 export interface objectData {
   post: Posts;
   uploadfile: {
     fileName: string;
-    file: Express.Multer.File;
+    fileSize: number;
+    file: Buffer;
   };
   authorization: string;
 }
@@ -35,31 +37,12 @@ export class PostsService {
     return this.postModel.find().exec();
   }
 
-
-
   async upload(
     uploadfile,
     postId,
   ): Promise<{ statusCode: number; fileDestination: string }> {
-    // const validFormats = [
-    //   'image/jpeg',
-    //   'image/jpg',
-    //   'image/png',
-    //   'image/gif',
-    //   'text/plain',
-    // ];
-    // if (!validFormats.includes(file.mimetype)) {
-    //   return {
-    //     statusCode: 400,
-    //     message: 'Invalid file format. Supported formats: JPG, PNG, GIF, TXT',
-    //   };
-    // }
-    // if (file.size > 102400) {
-    //   return {
-    //     statusCode: 400,
-    //     message: 'Invalid file size. Supported size is less 100Kb',
-    //   };
-    // }
+    
+
     const extention = uploadfile.fileName.split('.').pop().toLowerCase();
     const fileDestination = postId + '.' + extention;
 
@@ -84,7 +67,6 @@ export class PostsService {
       user: user.username,
       filedest: '',
     });
-    console.log(data)
     if (data.uploadfile.fileName.length !== 0) {
       const filedest = await this.upload(data.uploadfile, newPost._id);
       // if (filedest.statusCode === 400) {
@@ -120,7 +102,6 @@ export class PostsService {
   }
 
   getFile(path) {
-    console.log(path)
     return readFileSync(join(process.cwd(), path));
   }
 }

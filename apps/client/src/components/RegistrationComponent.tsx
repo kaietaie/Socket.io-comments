@@ -2,10 +2,11 @@ import { useRef, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import axios from "axios";
+import { url } from "../urlToBE";
 
 const EMAIL_REGEX = /^[A-z][@.][A-z0-9-_]{3,24}$/;
 const PASS_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,12}$/;
-const REGISTER_URL = `${import.meta.env.VITE_HOST}:${import.meta.env.VITE_PORT}/api/auth/signup`;
+const REGISTER_URL = `${url}/api/auth/signup`;
 
 const RegistrationComponent = () => {
   const userRef = useRef<HTMLInputElement | null>(null);
@@ -45,10 +46,8 @@ const RegistrationComponent = () => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-console.log({ username, email, password, homePage })
     try {
-      console.log(REGISTER_URL)
-      const res = await axios.post(
+      await axios.post(
         REGISTER_URL,
         JSON.stringify({ username, email, password, homePage }),
         {
@@ -56,7 +55,6 @@ console.log({ username, email, password, homePage })
           withCredentials: true,
         }
       );
-      console.log({res})
 
       setusername("");
       setEmail("");
@@ -121,7 +119,6 @@ console.log({ username, email, password, homePage })
           aria-invalid={validMatch ? "false" : "true"}
         />
         <TextField
-          inputRef={userRef}
           label="Домашня сторінка"
           id="homePage"
           name="homePage"

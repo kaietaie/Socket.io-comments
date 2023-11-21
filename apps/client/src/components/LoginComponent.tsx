@@ -3,10 +3,9 @@ import { Button, TextField } from "@mui/material";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
+import { url } from "../urlToBE";
 
-const LOGIN_URL = `${import.meta.env.VITE_HOST}:${
-  import.meta.env.VITE_PORT
-}/api/auth/login`;
+const LOGIN_URL = `${url}/api/auth/login`;
 
 const LoginComponent = () => {
   //@ts-ignore
