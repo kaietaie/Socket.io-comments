@@ -12,7 +12,7 @@ export default ({ mode }) => {
       host: true,
       proxy: {
         '/api': {
-          target: `${process.env.VITE_HOST} : ${process.env.VITE_PORT || 3000}`,
+          target: `${process.env.VITE_HOST} : ${process.env.VITE_PORT }`,
           changeOrigin: true
         }
       },
