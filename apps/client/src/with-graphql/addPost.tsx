@@ -33,6 +33,10 @@ const AddPost = (id?: any) => {
         homePage: safetyHP,
         createdAt: "",
         parentPost: id.id || "",
+        filedest: {
+          bucket: "comments-ws", 
+          key: ""
+        }
       };
 
       MakePost({ variables: { $data: post } });

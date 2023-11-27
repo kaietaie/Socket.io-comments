@@ -7,10 +7,10 @@ ENV AWS_ACCESS_KEY_ID=AKIAQ2FNHS7WQG3HPR5D
 ENV AWS_SECRET_ACCESS_KEY=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
 ENV JWTSECRET="CREATE A COMPLEX SECRET AND KEEP IT SAFE"
 ENV SESSIONSECRET="SECRETS SHOULD KEEPS IN SAFE"
-ENV HOST=http://localhost
+ENV HOST=https://comments-ws-1ff4be10b004.herokuapp.com
 ENV PORTCLIENT=5173
-ENV VITE_HOST=http://localhost
-ENV VITE_PORT=$PORT
+ENV VITE_HOST=https://comments-ws-1ff4be10b004.herokuapp.com
+ENV VITE_PORT=${PORT}
 COPY package*.json ./
 
 COPY . .
@@ -19,6 +19,6 @@ RUN npm install
 
 RUN npm run build
 
-EXPOSE 3000 80 443  
+EXPOSE 3000 80 443 
 
 CMD ["npm", "run", "start"]

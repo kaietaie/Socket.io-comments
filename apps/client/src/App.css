@@ -98,6 +98,7 @@ a {
   font-size: 14px;
   line-height: 1.5;
   color: #333;
+  cursor: pointer;
 }
 
 .post-actions {
@@ -134,7 +135,6 @@ a {
 .comment-button:hover {
   color: #767dda;
   background: transparent;
-  
 }
 
 .line {
@@ -144,7 +144,6 @@ a {
 .line:hover {
   text-decoration: underline;
 }
-
 
 .form {
   display: flex;
@@ -167,6 +166,6 @@ a {
 }
 
 .post-image {
-  max-width: 320px;
+  max-width: 240px;
   max-height: 240px;
 }

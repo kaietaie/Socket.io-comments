@@ -21,17 +21,19 @@ export class EventsGateway {
 
   @SubscribeMessage('newPost')
   async handleMessage(@ConnectedSocket() req, @MessageBody() data: objectData) {
-    if (data.uploadfile.fileName.length !== 0) {
-      const extention = data.uploadfile.fileName.split('.').pop().toLowerCase();
-      const validFormats = ['jpeg', 'jpg', 'png', 'gif', 'txt'];
-
-      if (!validFormats.includes(extention)) {
-        this.server.emit('onPostError', {
-          statusCode: 400,
-          message: 'Invalid file format. Supported formats: JPG, PNG, GIF, TXT',
-        });
-        return;
-      }
+    console.log("SubscribeMessage",data)
+    //@ts-ignore
+    if (data.post.filedest.key.length !== 0) {
+      const extention = data.post.filedest.key.split('.').pop().toLowerCase();
+      // const validFormats = ['jpeg', 'jpg', 'png', 'gif', 'txt'];
+      // if (!validFormats.includes(extention)) {
+      //   console.log('Invalid file format. Supported formats: JPG, PNG, GIF, TXT')
+      //   this.server.emit('onPostError', {
+      //     statusCode: 400,
+      //     message: 'Invalid file format. Supported formats: JPG, PNG, GIF, TXT',
+      //   });
+      //   return;
+      // }
       // if (extention !== 'txt') {
       //   const resizedBuffer = await new Promise<Buffer>((resolve, reject) => {
       //     const gm7 = gm.subClass({ imageMagick: '<7' });

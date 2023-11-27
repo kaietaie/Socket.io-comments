@@ -4,6 +4,8 @@ import AddPost from "./addPost";
 import useAuth from "../hooks/useAuth";
 import ImageComponent from "./imageComonent";
 import { AvatarGenerator } from "random-avatar-generator";
+import axios from "axios";
+import { url } from "../urlToBE";
 
 interface CommentProps {
   comment: PostMongo;
@@ -16,11 +18,51 @@ const RenderComment: React.FC<CommentProps> = ({ comment, comments }) => {
   //@ts-ignore
   const { auth } = useAuth();
   const generator = new AvatarGenerator();
+  const [imageData, setImageData] = useState<string>("");
+  const [extension, setExtension] = useState<string>("");
+
+  const fileExist = comment.filedest.key.length > 0;
+  const fetchData = async (comment: PostMongo) => {
+    setExtension(comment.filedest.key.split(".")[1]);
+    let conType = "application/json";
+
+    await axios
+      .get(
+        `${url}/api/posts/file/${JSON.stringify({
+          dir: comment._id,
+          filedest: comment.filedest,
+        })}`,
+        {
+          headers: {
+            "Content-Type": conType,
+            Authorization: "Bearer " + auth.accessToken,
+          },
+        }
+      )
+      .then((res) => {
+        if (extension === "txt") {
+          const blob = new Blob([res.data], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          setImageData(url);
+        } else {
+          setImageData(res.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching image: ", error);
+      });
+  };
 
   useEffect(() => {
     const avatarLink = generator.generateRandomAvatar(comment.user);
     setAvatart(avatarLink)
-  },[])
+     },[])
+  
+  useEffect(() => {
+    if(fileExist){
+      fetchData(comment)
+    }
+  },[fileExist])
 
 
   const handleReplyClick = () => {
@@ -41,7 +83,7 @@ const RenderComment: React.FC<CommentProps> = ({ comment, comments }) => {
           </button>
         </div>
         <div className="post-text">{comment.text}</div>
-        {<ImageComponent filedest={comment.filedest} />}
+        {imageData && <ImageComponent imageData={imageData}  extension={extension} />}
         {showAddPost && <AddPost id={comment._id} />}
         <div>
           {comments

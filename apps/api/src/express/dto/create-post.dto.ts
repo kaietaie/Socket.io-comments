@@ -11,5 +11,8 @@ export class CreatePostDTO {
 
     parentPost: string;
 
-    file: Express.Multer.File | null;;
+    filedest: {
+        bucket: string,
+        key: string,
+    };
 }

@@ -6,7 +6,7 @@ import { PostGraphModule } from './graphql/post.graph.module';
 import { PostModule } from './express/post.module';
 import { ConfigModule } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
-import { SQSModule } from './aws-sqs/sqs.module';
+import { AWSModule } from './aws-sqs-s3/AWSModule';
 import { AuthModule } from './auth/auth.module';
 import { CacheModule } from '@nestjs/cache-manager';
 
@@ -20,12 +20,11 @@ import { CacheModule } from '@nestjs/cache-manager';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'client', 'dist'),
-      // rootPath: join(__dirname, '../', 'uploads'),
     }),
     MongooseModule.forRoot(
       'mongodb+srv://kaieta:t13zh92wnb@cluster0.sg9jpxp.mongodb.net/?retryWrites=true&w=majority',
     ),
-    SQSModule,
+    AWSModule,
     PostModule,
     PostGraphModule,
     EventsModule,

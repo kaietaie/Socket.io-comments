@@ -1,15 +1,9 @@
 import { Module } from '@nestjs/common';
-import * as AWS from 'aws-sdk';
 import { SqsModule } from '@ssut/nestjs-sqs';
 import { MessageProducer } from './producer.service';
 import { config } from 'src/config';
+import { S3Module } from 'nestjs-s3';
 
-
-AWS.config.update({
-    region: config.REGION, 
-    accessKeyId: config.ACCESSKEYID,
-    secretAccessKey: config.SECRETACCESSKEY, 
-});
 
 @Module({
   imports: [
@@ -22,9 +16,16 @@ AWS.config.update({
         },
       ],
     }),
+    S3Module.forRoot({
+      config: {
+        endpoint: config.HOST + ':' + config.PORT,
+        forcePathStyle: true,
+      },
+    }),
   ],
   controllers: [],
   providers: [MessageProducer],
   exports: [MessageProducer],
 })
-export class SQSModule {}
+export class AWSModule {
+}

@@ -26,7 +26,13 @@ const AddPost = (id?: any) => {
       const validFormats = ["jpeg", "jpg", "png", "gif", "txt"];
 
       if (extention === "txt" && upload.size > 102400) {
-        setPostError("Max size 100Kb");
+        setPostError("Max size 100KB");
+        setFile(null);
+        setFileName("");
+        setFileSize(0);
+        return;
+      } else if (upload.size > 1000000) {
+        setPostError("Max size 1MB");
         setFile(null);
         setFileName("");
         setFileSize(0);
@@ -38,10 +44,10 @@ const AddPost = (id?: any) => {
         setFileSize(0);
         return;
       } else {
-        setPostError('')
+        setPostError("");
         //@ts-ignore
         setFile(upload);
-        setFileName(upload.name);
+        setFileName(upload.name.replace(/ /g, "_").replace(/[()]/g, ""));
         setFileSize(upload.size);
       }
     }
@@ -55,12 +61,16 @@ const AddPost = (id?: any) => {
       const post: Post = {
         text: safetyText,
         parentPost: id.id || "",
+        filedest: {
+          key: fileName,
+          bucket: "comments-ws",
+        },
       };
-      let uploadfile = {
-        fileName,
+      const uploadfile = {
         fileSize,
-        file,
+        file
       };
+      console.log(uploadfile)
       socket.emit(
         "newPost",
         { post, uploadfile, authorization: "Bearer " + auth.accessToken },

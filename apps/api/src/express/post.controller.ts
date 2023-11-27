@@ -1,14 +1,12 @@
 import {
   Controller,
   Get,
-  Res,
   Param,
   UseInterceptors,
   UseGuards,
-  HttpStatus,
 } from '@nestjs/common';
 import { PostsService } from './post.service';
-import { Posts, PostsDocument } from './schemas/post.schema';
+import { Posts } from './schemas/post.schema';
 import { AuthGuard } from '@nestjs/passport';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
@@ -24,12 +22,9 @@ export class PostsController {
   }
  
 
-  @Get('file/:filename')
-  getFile(@Param('filename') filename, @Res() res) {
-    const response = res.sendFile(filename, { root: './uploads' }); 
-    return {
-      status: HttpStatus.OK,
-      data: response,
-    };
+  @Get('file/:filedest')
+  getFile(@Param('filedest') filedest) {
+    const file = JSON.parse(filedest)
+   return this.postsService.getFile(file);
   }
 }

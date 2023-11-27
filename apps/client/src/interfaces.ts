@@ -1,14 +1,16 @@
 export interface Post {
   text: string;
   parentPost: string;
-  // file: Express.Multer.File | null;
+  filedest: {
+    bucket: string,
+    key: string,
+};
 }
 
 export interface PostMongo extends Post {
   _id: string;
   user: string;
   createdAt: string;
-  filedest: string;
 }
 
 export interface PostGraph extends Post {

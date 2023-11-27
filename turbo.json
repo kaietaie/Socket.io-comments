@@ -9,6 +9,7 @@
             ]
         },
         "build": {
+            "cache": false,
             "dotEnv": [
                 ".env"
             ],
@@ -20,6 +21,9 @@
             ]
         },
         "start": {
+            "dotEnv": [
+            ".env"
+            ],
             "dependsOn": [
               "^build"
             ]

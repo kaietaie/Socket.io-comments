@@ -21,8 +21,8 @@ export class Posts {
     @Prop()
     homePage: string
 
-    @Prop()
-    filedest: string
+    @Prop({type: Object})
+    filedest: {key: string, bucket: string}
 }
 
 export const PostsSchema = SchemaFactory.createForClass(Posts)
