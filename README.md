@@ -1,4 +1,4 @@
-# dzen-post-comments
+# Pet project 
 SPA: Comments 
 
 ### Using techologies: 
